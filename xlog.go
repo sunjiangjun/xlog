@@ -45,8 +45,9 @@ func NewXLogger() *XLog {
 	lgs.SetOutput(os.Stdout)
 	return &XLog{Logger: lgs}
 }
-func (log *XLog) BuildOutType(out OUT_TYPE) {
+func (log *XLog) BuildOutType(out OUT_TYPE) *XLog {
 	log.outType = out
+	return log
 }
 func (log *XLog) BuildFile(prefix string, RotationTime time.Duration) *XLog {
 	if log.outType == FILE {
