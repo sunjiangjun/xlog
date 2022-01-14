@@ -1,4 +1,4 @@
-module xlog
+module xiaohulu.hub520.com/sunhongtao/xlog
 
 go 1.16
 
