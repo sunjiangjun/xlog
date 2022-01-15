@@ -18,6 +18,27 @@ const (
 	HTTP = 3
 )
 
+const (
+
+	//FatalLevel = // level. Logs and then calls `logger.Exit(1)`. It will exit even if the
+	// logging level is set to Panic.
+	FatalLevel = iota + 1
+	// ErrorLevel level. Logs. Used for errors that should definitely be noted.
+	// Commonly used for hooks to send errors to an error tracking service.
+	ErrorLevel
+	// WarnLevel level. Non-critical entries that deserve eyes.
+	WarnLevel
+	// InfoLevel level. General operational entries about what's going on inside the
+	// application.
+	InfoLevel
+	// DebugLevel level. Usually only enabled when debugging. Very verbose logging.
+	DebugLevel
+	// TraceLevel level. Designates finer-grained informational events than the Debug.
+	TraceLevel
+)
+
+type Level int
+
 /**
 FORMAT_JSON = 1
 FORMAT_TXT  = 2
@@ -68,6 +89,11 @@ func (log *XLog) BuildFormatter(format FORMAT_LOG) *XLog {
 	if format == FORMAT_TXT {
 		log.SetFormatter(&logrus.TextFormatter{})
 	}
+	return log
+}
+
+func (log *XLog) BuildLevel(l Level) *XLog {
+	log.SetLevel(logrus.Level(l))
 	return log
 }
 
