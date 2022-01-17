@@ -56,6 +56,7 @@ type XLogger interface {
 }
 
 type XLog struct {
+	XLogger
 	*logrus.Logger
 	outType OUT_TYPE
 }
