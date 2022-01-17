@@ -5,9 +5,16 @@ import (
 	"time"
 )
 
+type M struct {
+	Name string
+	Id   int
+}
+
 func Test(t *testing.T) {
 	xl := NewXLogger().BuildFile("access", 2*time.Second)
-	xl.Println("name ,j,,,,,")
+
+	ss := []*M{&M{Name: "sunhongtao", Id: 1}, &M{Name: "wang", Id: 20}}
+	xl.PrintlnSlice(ss)
 	xl.BuildFormatter(FORMAT_JSON)
 	time.Sleep(10 * time.Second)
 }

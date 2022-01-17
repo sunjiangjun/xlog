@@ -1,6 +1,7 @@
 package xlog
 
 import (
+	"encoding/json"
 	"fmt"
 	rotate "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
@@ -53,12 +54,21 @@ HTTP=3
 type OUT_TYPE int
 
 type XLogger interface {
+	PrintlnSlice(args interface{})
 }
 
 type XLog struct {
 	XLogger
 	*logrus.Logger
 	outType OUT_TYPE
+}
+
+func (x *XLog) PrintlnSlice(args interface{}) {
+	body, err := json.Marshal(args)
+	if err != nil {
+		x.Error(err)
+	}
+	x.Println(string(body))
 }
 
 func NewXLogger() *XLog {
