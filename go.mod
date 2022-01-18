@@ -1,4 +1,4 @@
-module xiaohulu.hub520.com/sunhongtao/xlog
+module github.com/sunjiangjun/xlog
 
 go 1.16
 
