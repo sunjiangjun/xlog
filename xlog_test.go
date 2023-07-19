@@ -13,7 +13,7 @@ type M struct {
 func Test(t *testing.T) {
 	xl := NewXLogger().BuildFile("access", 2*time.Second)
 
-	ss := []*M{&M{Name: "sunhongtao", Id: 1}, &M{Name: "wang", Id: 21}}
+	ss := []*M{{Name: "sunhongtao", Id: 1}, {Name: "wang", Id: 21}}
 	xl.PrintlnSlice(ss)
 	xl.BuildFormatter(FORMAT_JSON)
 	time.Sleep(10 * time.Second)
