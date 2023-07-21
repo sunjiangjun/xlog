@@ -3,10 +3,11 @@ package xlog
 import (
 	"encoding/json"
 	"fmt"
-	rotate "github.com/lestrrat-go/file-rotatelogs"
-	"github.com/sirupsen/logrus"
 	"os"
 	"time"
+
+	rotate "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -19,39 +20,22 @@ const (
 	HTTP = 3
 )
 
-const (
-
-	//FatalLevel = // level. Logs and then calls `logger.Exit(1)`. It will exit even if the
-	// logging level is set to Panic.
-	FatalLevel = iota + 1
-	// ErrorLevel level. Logs. Used for errors that should definitely be noted.
-	// Commonly used for hooks to send errors to an error tracking service.
-	ErrorLevel
-	// WarnLevel level. Non-critical entries that deserve eyes.
-	WarnLevel
-	// InfoLevel level. General operational entries about what's going on inside the
-	// application.
-	InfoLevel
-	// DebugLevel level. Usually only enabled when debugging. Very verbose logging.
-	DebugLevel
-	// TraceLevel level. Designates finer-grained informational events than the Debug.
-	TraceLevel
-)
-
 type Level int
 
+//FormatLog
 /**
 FORMAT_JSON = 1
 FORMAT_TXT  = 2
 */
-type FORMAT_LOG int
+type FormatLog int
 
+//OutType
 /**
 STD=1
 FILE=2
 HTTP=3
 */
-type OUT_TYPE int
+type OutType int
 
 type XLogger interface {
 	PrintlnSlice(args interface{})
@@ -60,15 +44,15 @@ type XLogger interface {
 type XLog struct {
 	XLogger
 	*logrus.Logger
-	outType OUT_TYPE
+	outType OutType
 }
 
-func (x *XLog) PrintlnSlice(args interface{}) {
+func (log *XLog) PrintlnSlice(args interface{}) {
 	body, err := json.Marshal(args)
 	if err != nil {
-		x.Error(err)
+		log.Error(err)
 	}
-	x.Println(string(body))
+	log.Println(string(body))
 }
 
 func NewXLogger() *XLog {
@@ -77,7 +61,7 @@ func NewXLogger() *XLog {
 	lgs.SetOutput(os.Stdout)
 	return &XLog{Logger: lgs}
 }
-func (log *XLog) BuildOutType(out OUT_TYPE) *XLog {
+func (log *XLog) BuildOutType(out OutType) *XLog {
 	log.outType = out
 	return log
 }
@@ -93,7 +77,7 @@ func (log *XLog) BuildFile(prefix string, RotationTime time.Duration) *XLog {
 	return log
 }
 
-func (log *XLog) BuildFormatter(format FORMAT_LOG) *XLog {
+func (log *XLog) BuildFormatter(format FormatLog) *XLog {
 	if format == FORMAT_JSON {
 		log.SetFormatter(&logrus.JSONFormatter{})
 	}
@@ -107,15 +91,3 @@ func (log *XLog) BuildLevel(l Level) *XLog {
 	log.SetLevel(logrus.Level(l))
 	return log
 }
-
-/**
-  // Log as JSON instead of the default ASCII formatter.
-  log.SetFormatter(&log.JSONFormatter{})
-
-  // Output to stdout instead of the default stderr
-  // Can be any io.Writer, see below for File example
-  log.SetOutput(os.Stdout)
-
-  // Only log the warning severity or above.
-  log.SetLevel(log.WarnLevel)
-*/
