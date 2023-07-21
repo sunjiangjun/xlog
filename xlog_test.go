@@ -16,5 +16,5 @@ func Test(t *testing.T) {
 	ss := []*M{{Name: "vivi", Id: 1}, {Name: "wang", Id: 21}}
 	xl.PrintlnSlice(ss)
 	xl.BuildFormatter(FORMAT_JSON)
-	time.Sleep(10 * time.Second)
+	time.Sleep(15 * time.Second)
 }
